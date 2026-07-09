@@ -35,6 +35,10 @@ Put the Pico in BOOTSEL mode (hold BOOTSEL while plugging in, or via the reset c
 
 `PICO_RP2040_USB_DEVICE_ENUMERATION_FIX=1` is set in `CMakeLists.txt` to work around the RP2040-E5 USB errata (an issue that can prevent re-enumeration after certain host resets). This define is currently causing the board to hang instead of recovering — under investigation.
 
+## License
+
+[MIT](LICENSE)
+
 ## Disclaimer
 
 This project is for personal use on hardware and PCs you own or are authorized to use. Spoofing another device's USB identity to disguise a custom device from a host you don't control or don't have permission to modify may violate device policies or terms of use — use responsibly.
