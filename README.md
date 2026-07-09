@@ -17,10 +17,11 @@ The VID/PID and descriptor strings are deliberately changed to match a real mous
 
 ## Building
 
-Requires the Pico SDK toolchain (CMake, Ninja, arm-none-eabi-gcc). On this machine it's installed under `~/.pico-sdk` and not on `PATH` by default:
+Requires the Pico SDK toolchain (CMake, Ninja, arm-none-eabi-gcc), typically installed under `~/.pico-sdk` and not on `PATH` by default:
 
 ```bash
-export PATH="$HOME/.pico-sdk/cmake/v3.31.5/bin:$HOME/.pico-sdk/ninja/v1.12.1:$PATH"
+PICO_SDK_TOOLS="$HOME/.pico-sdk"
+export PATH="$PICO_SDK_TOOLS/cmake/v3.31.5/bin:$PICO_SDK_TOOLS/ninja/v1.12.1:$PATH"
 cd build
 cmake --build . --config Debug
 ```
