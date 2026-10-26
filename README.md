@@ -1,15 +1,16 @@
 # mini-usb-rp2040-mouse-emu
 
-USB mouse jiggler firmware for the Raspberry Pi Pico (RP2040). The device enumerates as a HID mouse and sends small random relative moves every 30–50 seconds to keep a PC from going idle/locking, while spoofing the USB identity (VID/PID/manufacturer/product strings) of a real mouse already connected to the host so it doesn't show up as an obviously custom device.
+USB mouse jiggler firmware for the Raspberry Pi Pico (RP2040). The device enumerates as a HID mouse and every 30 seconds nudges the cursor a short way and back again to keep a PC from going idle/locking, while spoofing the USB identity (VID/PID/manufacturer/product strings) of a real mouse already connected to the host so it doesn't show up as an obviously custom device.
 
 Built with the [Pico SDK](https://github.com/raspberrypi/pico-sdk) (2.1.1) and [TinyUSB](https://github.com/hathach/tinyusb), using CMake + Ninja.
 
 ## How it works
 
-- `src/main.c` — main loop: waits for USB mount, then every 30–50s sends a randomized relative mouse move (±2–6 px on X/Y) followed by a zero-move release. The RNG is seeded once at boot from ADC noise sampled on GPIO26.
+- `src/main.c` — TinyUSB callbacks and the main loop (`tud_task()` + `mouse_jiggler_task()`).
+- `src/mouse_jiggler.c` — movement algorithm (ported from the STM32 [mouseEmulator](https://github.com/dekuznetsov/mouseEmulator) project): 30s after mount and then every 30s, the LED lights up, the cursor moves 12 steps of +3/+3 px (one report per 10 ms), then 12 steps back so it ends where it started, and the LED goes off. A report is only sent once the previous one has been picked up by the host, so the forward and back moves always match and the cursor doesn't drift. Non-blocking state machine, so USB keeps being serviced during a jiggle.
 - `src/usb_descriptors.c` — USB device, configuration, HID report, and string descriptors. VID/PID and manufacturer/product strings are set here to impersonate a specific real mouse (currently a Xiaomi mouse, VID `0x2717` / PID `0x5013`).
 - `tusb_config.h` — TinyUSB configuration (device mode, HID class enabled).
-- `CMakeLists.txt` — build target `mouse_emu`, links `pico_stdlib`, `pico_time`, `hardware_adc`, `tinyusb_device`, `tinyusb_board`.
+- `CMakeLists.txt` — build target `mouse_emu`, links `pico_stdlib`, `pico_time`, `tinyusb_device`, `tinyusb_board`.
 
 ## Spoofed identity
 
