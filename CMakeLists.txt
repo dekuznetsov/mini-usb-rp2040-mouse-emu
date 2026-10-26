@@ -10,6 +10,7 @@ pico_sdk_init()
 
 add_executable(mouse_emu
     src/main.c
+    src/mouse_jiggler.c
     src/usb_descriptors.c
 )
 
@@ -25,7 +26,6 @@ target_compile_definitions(mouse_emu PRIVATE
 target_link_libraries(mouse_emu
     pico_stdlib
     pico_time
-    hardware_adc
     tinyusb_device
     tinyusb_board
 )
