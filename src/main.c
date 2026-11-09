@@ -2,6 +2,7 @@
 #include "bsp/board.h"
 #include "tusb.h"
 #include "mouse_jiggler.h"
+#include "status_led.h"
 
 // --- TinyUSB Callbacks ---
 
@@ -33,6 +34,7 @@ bool tud_hid_set_idle_cb(uint8_t instance, uint8_t idle_rate) {
 // --- Main ---
 int main(void) {
     board_init();
+    status_led_init();
     tusb_init();
 
     while (true) {

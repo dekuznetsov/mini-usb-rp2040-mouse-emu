@@ -12,7 +12,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "pico/time.h"
-#include "bsp/board.h"
+#include "status_led.h"
 #include "tusb.h"
 
 // --- Tuning ---
@@ -36,7 +36,7 @@ static bool           was_mounted;
 
 static void jiggle_stop(void) {
     jiggling = false;
-    board_led_write(false);
+    status_led_set(false);
     next_event = make_timeout_time_ms(JIGGLE_PERIOD_MS);
 }
 
@@ -44,7 +44,7 @@ void mouse_jiggler_task(void) {
     if (!tud_mounted()) {
         if (was_mounted) {
             jiggling = false;
-            board_led_write(false);
+            status_led_set(false);
         }
         was_mounted = false;
         return;
@@ -63,7 +63,7 @@ void mouse_jiggler_task(void) {
     if (!jiggling) {
         jiggling = true;
         step = 0;
-        board_led_write(true);
+        status_led_set(true);
     }
 
     // Send only once the previous report has been picked up by the host:

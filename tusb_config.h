@@ -15,6 +15,8 @@
 #endif
 
 // Common configuration
+// OPT_MCU_RP2040 also covers the RP2350: both share the same USB controller
+// driver in TinyUSB.
 #ifndef CFG_TUSB_MCU
 #define CFG_TUSB_MCU          OPT_MCU_RP2040
 #endif
