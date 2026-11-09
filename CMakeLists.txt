@@ -46,14 +46,6 @@ target_compile_definitions(mouse_emu PRIVATE
     CFG_TUD_HID=1
 )
 
-# RP2040-E5 USB enumeration errata workaround. The bug is fixed in RP2350
-# silicon, and the SDK only provides the workaround for RP2040.
-if (PICO_PLATFORM STREQUAL "rp2040")
-    target_compile_definitions(mouse_emu PRIVATE
-        PICO_RP2040_USB_DEVICE_ENUMERATION_FIX=1
-    )
-endif()
-
 target_link_libraries(mouse_emu
     pico_stdlib
     pico_time
