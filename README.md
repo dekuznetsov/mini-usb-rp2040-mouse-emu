@@ -81,7 +81,7 @@ The prebuilt `pioasm` from `~/.pico-sdk/tools/2.1.1` is picked up automatically,
 
 ## Known issues
 
-- **RP2040 only:** `PICO_RP2040_USB_DEVICE_ENUMERATION_FIX=1` is set to work around the RP2040-E5 USB errata, which affects enumeration behind some USB hubs. With it, the RP2040 board hung instead of recovering, and this is under investigation. RP2350 builds don't use it: the bug is fixed in RP2350 silicon, and the MINI USB RP2350 enumerates cleanly behind the same hub.
+- **Loose USB-A plug.** The stick's USB-A plug is a bit too thin and can seat crookedly in a port. While it settles, Windows may briefly show `Unknown USB Device (Device Descriptor Request Failed)` before the board enumerates normally. This is a mechanical fit issue, not a firmware or hub problem. If it persists, reseat the stick or use an extension cable or a snugger port. (This glitch was once blamed on the RP2040-E5 USB errata. The SDK workaround for that, `PICO_RP2040_USB_DEVICE_ENUMERATION_FIX`, made the RP2040 hang, so it's no longer enabled.)
 - **WS2812 keeps its last colour** until it loses power. After flashing firmware that doesn't drive GPIO22 (for example a build for another board), the LED can stay lit in whatever colour it last received. Unplug and replug to clear it.
 
 ## License
