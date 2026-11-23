@@ -39,6 +39,7 @@ The board isn't in the Pico SDK, so `boards/mini_usb_rp2350.h` describes it: the
   - Otherwise the plain LED is driven via `board_led_write()`.
 - `src/usb_descriptors.c`: USB device, configuration, HID report and string descriptors. The VID/PID and manufacturer/product strings are set here to impersonate a specific real mouse (currently a Xiaomi mouse, VID `0x2717` / PID `0x5013`).
 - `boards/mini_usb_rp2350.h`: the board config for the MINI USB RP2350 (the default board).
+- `boards/tenstar_rp2350_usb.h`: the board config for the TENSTAR RP2350-USB 16MB, another clone of the same Nologo "Mini USB RP2350" design. It's a standalone header, not based on `waveshare_rp2350_one`: WS2812 on GPIO22, 16 MB flash, I2C0 on the Qwiic connector (GPIO16/17), and no SMPS pin.
 - `tusb_config.h`: TinyUSB configuration (device mode, HID class enabled).
 - `CMakeLists.txt`: the build target `mouse_emu`. It links `pico_stdlib`, `pico_time`, `hardware_pio`, `tinyusb_device` and `tinyusb_board`, and selects the board.
 
@@ -64,6 +65,9 @@ This produces `build-rp2350/mouse_emu.uf2`.
 For other boards, pass `PICO_BOARD` and use a separate build directory:
 
 ```bash
+# TENSTAR RP2350-USB 16MB
+cmake -S . -B build-tenstar -G "Ninja Multi-Config" -DPICO_BOARD=tenstar_rp2350_usb -DPICO_SDK_PATH="$PICO_SDK_TOOLS/sdk/2.1.1"
+
 # Raspberry Pi Pico 2 (RP2350)
 cmake -S . -B build-pico2 -G "Ninja Multi-Config" -DPICO_BOARD=pico2 -DPICO_SDK_PATH="$PICO_SDK_TOOLS/sdk/2.1.1"
 
