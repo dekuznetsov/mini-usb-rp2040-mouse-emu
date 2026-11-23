@@ -8,18 +8,18 @@ Built with the [Pico SDK](https://github.com/raspberrypi/pico-sdk) (2.1.1) and [
 
 ## Hardware
 
-The target board is the "MINI USB RP2350 Development Board" by AITEWIN ROBOT ([AliExpress](https://www.aliexpress.com/item/1005009656371359.html), variant "RP2350 USB 16MB"):
+The target board is the "Mini USB RP2350" USB-A stick, a Nologo design that several sellers sell under their own names. Examples are AITEWIN ROBOT "MINI USB RP2350 Development Board" ([AliExpress](https://www.aliexpress.com/item/1005009656371359.html), variant "RP2350 USB 16MB") and TENSTAR ROBOT "RP2350-USB 16MB":
 
 | | |
 |---|---|
 | MCU | RP2350A, dual Cortex-M33 |
-| Flash | 16 MB (the firmware uses ~50 KB; the build assumes 4 MB, which is fine) |
+| Flash | 16 MB (the firmware uses ~50 KB) |
 | USB | USB-A plug, plugs straight into the PC |
 | Buttons | BOOT (BOOTSEL), RESET |
 | LED | WS2812 RGB LED, data on **GPIO22**, GRB colour order |
-| Other | JST 1.0 mm 4-pin connector, castellated GPIO pads (unused) |
+| Other | Qwiic/STEMMA QT connector (I2C0 on GPIO16/17), castellated GPIO pads (unused) |
 
-The board isn't in the Pico SDK, so `boards/mini_usb_rp2350.h` describes it: the same layout as `waveshare_rp2350_one`, but with the LED on GPIO22 instead of GPIO16. The vendor doesn't document the LED pin, so it was found on the hardware by sending WS2812 frames to GPIOs one at a time.
+The board isn't in the Pico SDK, so `boards/mini_usb_rp2350.h` describes it. The pinout comes from the Nologo schematic and the Zephyr [Bridle](https://bridle.tiac-systems.net/doc/4.2.1/bridle/boards/nologo/mini_usb_rp2350/doc/index.html) docs. The LED pin was found on the hardware by sending WS2812 frames to GPIOs one at a time. Despite the TENSTAR listing's name, this is not the Waveshare RP2350-USB-A: the pinout differs.
 
 ### Status LED
 
@@ -39,7 +39,6 @@ The board isn't in the Pico SDK, so `boards/mini_usb_rp2350.h` describes it: the
   - Otherwise the plain LED is driven via `board_led_write()`.
 - `src/usb_descriptors.c`: USB device, configuration, HID report and string descriptors. The VID/PID and manufacturer/product strings are set here to impersonate a specific real mouse (currently a Xiaomi mouse, VID `0x2717` / PID `0x5013`).
 - `boards/mini_usb_rp2350.h`: the board config for the MINI USB RP2350 (the default board).
-- `boards/tenstar_rp2350_usb.h`: the board config for the TENSTAR RP2350-USB 16MB, another clone of the same Nologo "Mini USB RP2350" design. It's a standalone header, not based on `waveshare_rp2350_one`: WS2812 on GPIO22, 16 MB flash, I2C0 on the Qwiic connector (GPIO16/17), and no SMPS pin.
 - `tusb_config.h`: TinyUSB configuration (device mode, HID class enabled).
 - `CMakeLists.txt`: the build target `mouse_emu`. It links `pico_stdlib`, `pico_time`, `hardware_pio`, `tinyusb_device` and `tinyusb_board`, and selects the board.
 
@@ -65,9 +64,6 @@ This produces `build-rp2350/mouse_emu.uf2`.
 For other boards, pass `PICO_BOARD` and use a separate build directory:
 
 ```bash
-# TENSTAR RP2350-USB 16MB
-cmake -S . -B build-tenstar -G "Ninja Multi-Config" -DPICO_BOARD=tenstar_rp2350_usb -DPICO_SDK_PATH="$PICO_SDK_TOOLS/sdk/2.1.1"
-
 # Raspberry Pi Pico 2 (RP2350)
 cmake -S . -B build-pico2 -G "Ninja Multi-Config" -DPICO_BOARD=pico2 -DPICO_SDK_PATH="$PICO_SDK_TOOLS/sdk/2.1.1"
 
