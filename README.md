@@ -8,18 +8,18 @@ Built with the [Pico SDK](https://github.com/raspberrypi/pico-sdk) (2.1.1) and [
 
 ## Hardware
 
-The target board is the "MINI USB RP2350 Development Board" by AITEWIN ROBOT ([AliExpress](https://www.aliexpress.com/item/1005009656371359.html), variant "RP2350 USB 16MB"):
+The target board is the "Mini USB RP2350" USB-A stick, a Nologo design that several sellers sell under their own names. Examples are AITEWIN ROBOT "MINI USB RP2350 Development Board" ([AliExpress](https://www.aliexpress.com/item/1005009656371359.html), variant "RP2350 USB 16MB") and TENSTAR ROBOT "RP2350-USB 16MB":
 
 | | |
 |---|---|
 | MCU | RP2350A, dual Cortex-M33 |
-| Flash | 16 MB (the firmware uses ~50 KB; the build assumes 4 MB, which is fine) |
+| Flash | 16 MB (the firmware uses ~50 KB) |
 | USB | USB-A plug, plugs straight into the PC |
 | Buttons | BOOT (BOOTSEL), RESET |
 | LED | WS2812 RGB LED, data on **GPIO22**, GRB colour order |
-| Other | JST 1.0 mm 4-pin connector, castellated GPIO pads (unused) |
+| Other | Qwiic/STEMMA QT connector (I2C0 on GPIO16/17), castellated GPIO pads (unused) |
 
-The board isn't in the Pico SDK, so `boards/mini_usb_rp2350.h` describes it: the same layout as `waveshare_rp2350_one`, but with the LED on GPIO22 instead of GPIO16. The vendor doesn't document the LED pin, so it was found on the hardware by sending WS2812 frames to GPIOs one at a time.
+The board isn't in the Pico SDK, so `boards/mini_usb_rp2350.h` describes it. The pinout comes from the Nologo schematic and the Zephyr [Bridle](https://bridle.tiac-systems.net/doc/4.2.1/bridle/boards/nologo/mini_usb_rp2350/doc/index.html) docs. The LED pin was found on the hardware by sending WS2812 frames to GPIOs one at a time. Despite the TENSTAR listing's name, this is not the Waveshare RP2350-USB-A: the pinout differs.
 
 ### Status LED
 
